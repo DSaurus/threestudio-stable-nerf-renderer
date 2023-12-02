@@ -1,7 +1,7 @@
 # threestudio-stable-nerf-renderer
 Stable nerf renderer is an extension of threestudio, which reduces and stabilize VRAM usage in 3D generation process. To use it, please install [ThreeStudio](https://github.com/threestudio-project/threestudio) first and then install this extension in threestudio `custom` directory.
 
-# Installation
+## Installation
 ```
 cd custom
 git clone https://github.com/DSaurus/threestudio-stable-nerf-renderer.git
@@ -18,12 +18,12 @@ Based on my experiment with NeRF 512x512 rendering, using 6000000 points for gra
 ```
 renderer_type: "stable-nerf-volume-renderer"
 renderer:
-base_renderer_type: "mask-nerf-volume-renderer"
-base_renderer:
-    radius: ${system.geometry.radius}
-    num_samples_per_ray: 512
-    train_max_nums: 6000000
-    block_nums: [3,3]
+    base_renderer_type: "mask-nerf-volume-renderer"
+    base_renderer:
+        radius: ${system.geometry.radius}
+        num_samples_per_ray: 512
+        train_max_nums: 6000000
+        block_nums: [3,3]
 ```
 
 By utilizing the proposed configuration, the memory usage will be stabilized at ~23GB (21 + 16/(3*3)).
