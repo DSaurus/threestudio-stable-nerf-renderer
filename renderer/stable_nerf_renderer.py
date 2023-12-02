@@ -65,7 +65,9 @@ class PatchRenderer(VolumeRenderer):
                         int_rays_o = rays_o[:, i::YI, j::XI]
                         int_rays_d = rays_d[:, i::YI, j::XI]
                         if MAX_N > 0:
-                            self.base_renderer.cfg.train_max_nums = MAX_N // (YI * XI)
+                            self.base_renderer.cfg.train_max_nums = MAX_N // (
+                                YI * XI * B
+                            )
                         out = self.base_renderer(
                             int_rays_o, int_rays_d, light_positions, bg_color, **kwargs
                         )
