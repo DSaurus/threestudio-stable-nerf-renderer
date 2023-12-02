@@ -1,5 +1,5 @@
 # threestudio-stable-nerf-renderer
-Stable nerf renderer is an extension of threestudio, which reduces and stabilize VRAM usage in 3D generation process. To use it, please install [ThreeStudio](https://github.com/threestudio-project/threestudio) first and then install this extension in threestudio `custom` directory.
+Stable nerf renderer is an extension of threestudio, which reduces and stabilize VRAM usage in 3D generation process. To use it, please install [threestudio](https://github.com/threestudio-project/threestudio) first and then install this extension in threestudio `custom` directory.
 
 ## Installation
 ```
