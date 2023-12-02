@@ -23,7 +23,7 @@ renderer:
         radius: ${system.geometry.radius}
         num_samples_per_ray: 512
         train_max_nums: 6000000
-        block_nums: [3,3]
+    block_nums: [3,3]
 ```
 
 By utilizing the proposed configuration, the memory usage will be stabilized at ~23GB (21 + 16/(3*3)).
