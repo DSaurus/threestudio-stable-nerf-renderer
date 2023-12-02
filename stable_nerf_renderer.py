@@ -1,9 +1,8 @@
 from dataclasses import dataclass
 
+import threestudio
 import torch
 import torch.nn.functional as F
-
-import threestudio
 from threestudio.models.background.base import BaseBackground
 from threestudio.models.geometry.base import BaseImplicitGeometry
 from threestudio.models.materials.base import BaseMaterial
@@ -28,7 +27,6 @@ class PatchRenderer(VolumeRenderer):
         material: BaseMaterial,
         background: BaseBackground,
     ) -> None:
-        
         if geometry.cfg.normal_type == "analytic":
             raise NotImplementedError(
                 "Stable nerf renderer can not use analytic normal type."

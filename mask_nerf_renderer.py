@@ -2,10 +2,9 @@ from dataclasses import dataclass, field
 from functools import partial
 
 import nerfacc
+import threestudio
 import torch
 import torch.nn.functional as F
-
-import threestudio
 from threestudio.models.background.base import BaseBackground
 from threestudio.models.estimators import ImportanceEstimator
 from threestudio.models.geometry.base import BaseImplicitGeometry
@@ -277,12 +276,12 @@ class StableNeRFVolumeRenderer(VolumeRenderer):
         t_positions = (t_starts + t_ends) / 2.0
         positions = t_origins + t_dirs * t_positions
         t_intervals = t_ends - t_starts
-        
+
         MAX_N = self.cfg.train_max_nums
         QUERY_N = positions.shape[0]
         mask_positions = torch.randperm(QUERY_N, device=positions.device)
         mask_positions = mask_positions < MAX_N
-            
+
         if self.training:
             if QUERY_N > MAX_N:
                 with torch.no_grad():
@@ -302,7 +301,8 @@ class StableNeRFVolumeRenderer(VolumeRenderer):
                     )
 
                 geo_out = self.geometry(
-                    positions[mask_positions], output_normal=self.material.requires_normal
+                    positions[mask_positions],
+                    output_normal=self.material.requires_normal,
                 )
                 rgb_fg_all = self.material(
                     viewdirs=t_dirs[mask_positions],
@@ -314,12 +314,18 @@ class StableNeRFVolumeRenderer(VolumeRenderer):
                 for key in geo_out:
                     if torch.is_tensor(geo_out[key]):
                         if geo_out[key].shape[0] == MAX_N:
-                            new_out = torch.zeros(QUERY_N, *geo_out[key].shape[1:], device=geo_out[key].device)
+                            new_out = torch.zeros(
+                                QUERY_N,
+                                *geo_out[key].shape[1:],
+                                device=geo_out[key].device
+                            )
                             new_out[mask_positions] = geo_out[key]
                             new_out[~mask_positions] = geo_out_mask[key]
                             geo_out[key] = new_out
 
-                new_rgb_fg_all = torch.zeros(QUERY_N, *rgb_fg_all.shape[1:], device=rgb_fg_all.device)
+                new_rgb_fg_all = torch.zeros(
+                    QUERY_N, *rgb_fg_all.shape[1:], device=rgb_fg_all.device
+                )
                 new_rgb_fg_all[mask_positions] = rgb_fg_all
                 new_rgb_fg_all[~mask_positions] = rgb_fg_all_mask
                 rgb_fg_all = new_rgb_fg_all
